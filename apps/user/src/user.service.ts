@@ -44,10 +44,10 @@ export class UserService {
     }
   }
 
-  async findUser(request: FindUserRequest): Promise<User> {
-    const user = await this.userRepository.findOne(request);
+  async findUser(_id: string): Promise<User> {
+    const user = await this.userRepository.findOne(_id);
     if (!user) {
-      throw new NotFoundException(`User #${request._id} not found`);
+      throw new NotFoundException(`User #${_id} not found`);
     }
     return user;
   }

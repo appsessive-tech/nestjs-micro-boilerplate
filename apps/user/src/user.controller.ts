@@ -80,6 +80,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Find user' })
+  @ApiParam({name: '_id', required: true, description: 'string for _id', schema: { type: 'string'}})
   @ApiResponse({
     status: 200,
     type: FindUserRequest,
@@ -95,8 +96,8 @@ export class UserController {
     description: 'Not Found',
   })
   @Get()
-  async getUser(@Body() request: FindUserRequest) {
-    return this.userService.findUser(request);
+  async getUser(@Query() {_id}) {
+    return this.userService.findUser(_id);
   }
 
   @ApiOperation({ summary: 'All users' })
