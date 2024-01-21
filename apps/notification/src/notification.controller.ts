@@ -11,8 +11,8 @@ export class NotificationController {
   ) {}
 
   @Get()
-  getHello(): string {
-    return this.notificationService.getHello();
+  getServiceName(): string {
+    return this.notificationService.getServiceName();
   }
 
   @EventPattern('user_created')

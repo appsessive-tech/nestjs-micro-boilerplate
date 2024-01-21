@@ -86,14 +86,14 @@ export class UserController {
     type: FindUserRequest,
   })
   @ApiResponse({
-    status: 500,
-    type: ErrorDTO,
-    description: 'Internal Server Error',
-  })
-  @ApiResponse({
     status: 204,
     type: ErrorDTO,
     description: 'Not Found',
+  })
+  @ApiResponse({
+    status: 500,
+    type: ErrorDTO,
+    description: 'Internal Server Error',
   })
   @Get('/:id')
   async getUser(@Param('id') id: string) {
@@ -120,5 +120,24 @@ export class UserController {
   async getUsers(@Param('skip') skip: number, @Param('limit') limit: number) {
     console.log('limit',limit);
     return this.userService.findPaginatedUsers(skip, limit);
+  }
+
+  @ApiOperation({ summary: 'user' })
+  @ApiResponse({
+    status: 200
+  })
+  @ApiResponse({
+    status: 500,
+    type: ErrorDTO,
+    description: 'Internal Server Error',
+  })
+  @ApiResponse({
+    status: 404,
+    type: ErrorDTO,
+    description: 'Not Found',
+  })
+  @Get()
+  async getHealth() {
+    return true;
   }
 }

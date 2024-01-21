@@ -4,7 +4,6 @@ import { lastValueFrom } from 'rxjs';
 import { NOTIFICATION_SERVICE } from './constants/services';
 import { CreateUserRequest } from './dto/create-user.request';
 import { DeleteUserRequest } from './dto/delete-user.request';
-import { FindUserRequest } from './dto/find-user.request';
 import { User } from './schemas/user.schema';
 import { UserRepository } from './user.repository';
 

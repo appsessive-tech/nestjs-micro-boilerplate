@@ -1,13 +1,16 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { TerminusModule } from '@nestjs/terminus';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Joi from 'joi';
-import { DatabaseModule, RmqModule, AuthModule } from '@app/common';
+import { DatabaseModule, RmqModule } from '@app/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UserRepository } from './user.repository';
 import { User, UserSchema } from './schemas/user.schema';
 import { NOTIFICATION_SERVICE } from './constants/services';
+import { HealthCheckController } from './health-check.controller';
 
 @Module({
   imports: [
@@ -24,9 +27,11 @@ import { NOTIFICATION_SERVICE } from './constants/services';
     RmqModule.register({
       name: NOTIFICATION_SERVICE,
     }),
-    AuthModule,
+    HttpModule,
+    RmqModule,
+    TerminusModule,
   ],
-  controllers: [UserController],
+  controllers: [HealthCheckController, UserController],
   providers: [UserService, UserRepository],
 })
 export class UserModule {}

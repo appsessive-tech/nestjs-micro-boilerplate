@@ -4,7 +4,7 @@ import { Injectable, Logger } from '@nestjs/common';
 export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
 
-  getHello(): string {
+  getServiceName(): string {
     return 'NotificationService';
   }
 

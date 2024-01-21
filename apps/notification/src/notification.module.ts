@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { RmqModule, AuthModule } from '@app/common';
+import { HttpModule } from '@nestjs/axios';
+import { TerminusModule } from '@nestjs/terminus';
+import { RmqModule } from '@app/common';
 import * as Joi from 'joi';
 import { NotificationController } from './notification.controller';
 import { NotificationService } from './notification.service';
 import { ConfigModule } from '@nestjs/config';
+import { HealthCheckController } from './health-check.controller';
 
 @Module({
   imports: [
@@ -14,10 +17,11 @@ import { ConfigModule } from '@nestjs/config';
         RABBIT_MQ_NOTIFICATION_QUEUE: Joi.string().required(),
       }),
     }),
+    HttpModule,
     RmqModule,
-    AuthModule,
+    TerminusModule
   ],
-  controllers: [NotificationController],
+  controllers: [HealthCheckController, NotificationController],
   providers: [NotificationService],
 })
 export class NotificationModule {}

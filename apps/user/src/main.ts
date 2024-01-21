@@ -5,7 +5,9 @@ import { ConfigService } from '@nestjs/config';
 import { UserModule } from './user.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(UserModule);
+  const app = await NestFactory.create(UserModule, {
+    logger: console,
+  });
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
