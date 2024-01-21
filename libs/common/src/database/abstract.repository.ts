@@ -31,8 +31,8 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     ).toJSON() as unknown as TDocument;
   }
 
-  async findOne(_id: string): Promise<TDocument> {
-    const document = await this.model.findOne({ user: new Types.ObjectId(_id) }, {}, { lean: true });
+  async findOne(_id: string) {
+    const document = await this.model.findById(_id, {}, { lean: true });
 
     if (!document) {
       this.logger.warn('Document not found with filterQuery, _id: ', _id);
@@ -59,7 +59,21 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return document;
   }
 
-  async deleteOne(filterQuery: FilterQuery<TDocument>): Promise<TDocument> {
+  async findOneAndDelete(
+    filterQuery: FilterQuery<TDocument>,
+    update: UpdateQuery<TDocument>,
+  ) {
+    const document = await this.model.findOneAndDelete(filterQuery, update);
+
+    if (!document) {
+      this.logger.warn(`Document not found with filterQuery:`, filterQuery);
+      throw new NotFoundException('Document not found.');
+    }
+
+    return document;
+  }
+
+  async deleteOne(filterQuery: FilterQuery<TDocument>) {
     const document = await this.model.findOne(filterQuery);
 
     if (!document) {
@@ -88,8 +102,8 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   }
 
   async findPaginated(
-    skip = 0,
-    limit = 8,
+    skip:number = 0,
+    limit:number = 8,
     ) {
     const count = await this.model.countDocuments({}).exec();
     const page_total = Math.floor((count - 1)/ limit) + 1;

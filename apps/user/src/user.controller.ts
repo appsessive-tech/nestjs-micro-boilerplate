@@ -1,5 +1,5 @@
 import { ErrorDTO } from '@app/common/dto/error.dto';
-import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import {
   ApiOperation,
   ApiParam,
@@ -80,7 +80,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'Find user' })
-  @ApiParam({name: '_id', required: true, description: 'string for _id', schema: { type: 'string'}})
+  @ApiParam({name: 'id', required: true, description: 'string for _id', schema: { type: 'string'}})
   @ApiResponse({
     status: 200,
     type: FindUserRequest,
@@ -95,9 +95,9 @@ export class UserController {
     type: ErrorDTO,
     description: 'Not Found',
   })
-  @Get()
-  async getUser(@Query() {_id}) {
-    return this.userService.findUser(_id);
+  @Get('/:id')
+  async getUser(@Param('id') id: string) {
+    return this.userService.findUser(id);
   }
 
   @ApiOperation({ summary: 'All users' })
@@ -116,8 +116,9 @@ export class UserController {
     type: ErrorDTO,
     description: 'Not Found',
   })
-  @Get('all')
-  async getUsers(@Query() {limit, skip}) {
+  @Get('all/:skip/:limit')
+  async getUsers(@Param('skip') skip: number, @Param('limit') limit: number) {
+    console.log('limit',limit);
     return this.userService.findPaginatedUsers(skip, limit);
   }
 }
